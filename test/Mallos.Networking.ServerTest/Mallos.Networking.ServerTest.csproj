@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Mallos.Networking.csproj" />
+    <ProjectReference Include="..\..\src\Mallos.Networking.Abstractions\Mallos.Networking.Abstractions.csproj" />
+    <ProjectReference Include="..\..\src\Mallos.Networking\Mallos.Networking.csproj" />
   </ItemGroup>
 
   <ItemGroup>

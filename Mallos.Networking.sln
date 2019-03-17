@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28705.295
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking", "src\Mallos.Networking.csproj", "{8885EB0A-40F3-4CE7-A04A-11FAC55BF987}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EDB23798-545E-4F81-B276-3F68A4CC5BDF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mallos.Networking.ClientTest", "test\Mallos.Networking.ClientTest\Mallos.Networking.ClientTest.csproj", "{6CBDD4AD-008C-4926-B7C3-63A45336CC7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking.ClientTest", "test\Mallos.Networking.ClientTest\Mallos.Networking.ClientTest.csproj", "{6CBDD4AD-008C-4926-B7C3-63A45336CC7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mallos.Networking.ServerTest", "test\Mallos.Networking.ServerTest\Mallos.Networking.ServerTest.csproj", "{40964232-C36D-48A5-ADD1-AEBDFB893EB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking.ServerTest", "test\Mallos.Networking.ServerTest\Mallos.Networking.ServerTest.csproj", "{40964232-C36D-48A5-ADD1-AEBDFB893EB9}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Mallos.Networking.CommonTest", "test\Mallos.Networking.CommonTest\Mallos.Networking.CommonTest.shproj", "{A6360D1B-D2D6-4286-8F70-5E3D0EB68337}"
 EndProject
@@ -23,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Networker.Formatter.ZeroFor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Networker.Formatter.ProtobufNet", "dep\Networker\Networker.Formatter.ProtobufNet\Networker.Formatter.ProtobufNet.csproj", "{80D9C739-11A3-4CC9-AB2A-336D7787C41F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking", "src\Mallos.Networking\Mallos.Networking.csproj", "{543316A8-B916-4F5B-AAFA-684831770BD7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking.Abstractions", "src\Mallos.Networking.Abstractions\Mallos.Networking.Abstractions.csproj", "{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		test\Mallos.Networking.CommonTest\Mallos.Networking.CommonTest.projitems*{a6360d1b-d2d6-4286-8f70-5e3d0eb68337}*SharedItemsImports = 13
@@ -32,10 +34,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8885EB0A-40F3-4CE7-A04A-11FAC55BF987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8885EB0A-40F3-4CE7-A04A-11FAC55BF987}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8885EB0A-40F3-4CE7-A04A-11FAC55BF987}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8885EB0A-40F3-4CE7-A04A-11FAC55BF987}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CBDD4AD-008C-4926-B7C3-63A45336CC7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CBDD4AD-008C-4926-B7C3-63A45336CC7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CBDD4AD-008C-4926-B7C3-63A45336CC7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,18 +54,27 @@ Global
 		{80D9C739-11A3-4CC9-AB2A-336D7787C41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80D9C739-11A3-4CC9-AB2A-336D7787C41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80D9C739-11A3-4CC9-AB2A-336D7787C41F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{543316A8-B916-4F5B-AAFA-684831770BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{543316A8-B916-4F5B-AAFA-684831770BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{543316A8-B916-4F5B-AAFA-684831770BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{543316A8-B916-4F5B-AAFA-684831770BD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{8885EB0A-40F3-4CE7-A04A-11FAC55BF987} = {D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}
 		{6CBDD4AD-008C-4926-B7C3-63A45336CC7C} = {EDB23798-545E-4F81-B276-3F68A4CC5BDF}
 		{40964232-C36D-48A5-ADD1-AEBDFB893EB9} = {EDB23798-545E-4F81-B276-3F68A4CC5BDF}
 		{A6360D1B-D2D6-4286-8F70-5E3D0EB68337} = {EDB23798-545E-4F81-B276-3F68A4CC5BDF}
 		{57FCAD61-6347-4145-9132-851F8DF47CE5} = {89E80B1E-E97D-4B6E-BE19-57E7DF625D85}
 		{3D9771F8-7535-465A-97F5-E7E0D5BE90EA} = {89E80B1E-E97D-4B6E-BE19-57E7DF625D85}
 		{80D9C739-11A3-4CC9-AB2A-336D7787C41F} = {89E80B1E-E97D-4B6E-BE19-57E7DF625D85}
+		{543316A8-B916-4F5B-AAFA-684831770BD7} = {D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}
+		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B} = {D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {615018A0-7065-4FF7-9850-8682FB13285E}

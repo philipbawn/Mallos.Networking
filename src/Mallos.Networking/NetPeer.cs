@@ -3,6 +3,7 @@
     using Mallos.Networking.Chat;
     using System;
     using System.ComponentModel;
+    using System.Threading.Tasks;
 
     public enum NetPeerStatus
     {
@@ -42,7 +43,7 @@
             this.Chat = new ChatService(this);
         }
 
-        public abstract void Start(NetConnectionParameters parameters = default, Action<NetPeer, NetPeerStatus> callback = null);
+        public abstract Task Start(NetConnectionParameters parameters = default);
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public abstract void SendPacket<T>(T packet);

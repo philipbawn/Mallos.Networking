@@ -1,11 +1,10 @@
 ﻿namespace Mallos.Networking
 {
-    using Mallos.Networking.Handlers;
-    using Mallos.Networking.Packets;
     using Networker.Server;
     using Networker.Server.Abstractions;
     using System;
     using System.ComponentModel;
+    using System.Threading.Tasks;
 
     public class NetServer : NetPeer
     {
@@ -19,7 +18,7 @@
 
         }
 
-        public override void Start(NetConnectionParameters parameters = default, Action<NetPeer, NetPeerStatus> callback = null)
+        public override Task Start(NetConnectionParameters parameters = default)
         {
             this.Parameters = parameters;
 
@@ -28,6 +27,8 @@
             this.server.ClientDisconnected += ClientDisconnected;
 
             this.server.Start();
+
+            return Task.CompletedTask;
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
@@ -56,7 +57,6 @@
             var parameters = new NetConnectionParameters();
             return new ServerBuilder()
                 .AddDefaultSettings(parameters, this)
-                .RegisterPacketHandlerModule<DefaultPacketHandlerModule>()
                 .Build();
 
             // .RegisterPacketHandler<PlayerUpdatePacket, PlayerUpdatePacketHandler>()

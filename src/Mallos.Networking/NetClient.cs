@@ -5,6 +5,7 @@
     using System;
     using System.ComponentModel;
     using System.Net.Sockets;
+    using System.Threading.Tasks;
 
     public class NetClient : NetPeer
     {
@@ -19,7 +20,7 @@
 
         }
 
-        public override void Start(NetConnectionParameters parameters = default, Action<NetPeer, NetPeerStatus> callback = null)
+        public override Task Start(NetConnectionParameters parameters = default)
         {
             this.Parameters = parameters;
 
@@ -27,6 +28,8 @@
             this.client.Connected += ClientConnected;
             this.client.Disconnected += ClientDisconnected;
             this.client.Connect();
+
+            return Task.CompletedTask;
         }
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]

@@ -1,4 +1,4 @@
-﻿namespace Mallos.Networking.Chat
+﻿namespace Mallos.Networking
 {
     using System;
 
