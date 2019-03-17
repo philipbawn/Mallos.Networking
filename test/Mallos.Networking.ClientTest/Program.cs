@@ -1,5 +1,6 @@
 ﻿namespace Mallos.Networking.ClientTest
 {
+    using System;
     using System.Threading;
 
     class Program
@@ -10,7 +11,12 @@
 
             var client = new NetClient(serviceProvider);
 
-            client.Start(new NetConnectionParameters("eric", "", "localhost"));
+            client.Chat.Received += (message) =>
+            {
+                Console.WriteLine(message.ToString());
+            };
+
+            client.Start(new NetConnectionParameters("eric", "password", "localhost"));
 
             Helpers.WaitUntilRunning(client);
             while (client.Running)

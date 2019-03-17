@@ -1,5 +1,6 @@
 ﻿namespace Mallos.Networking.ServerTest
 {
+    using System;
     using System.Threading;
 
     class Program
@@ -9,6 +10,11 @@
             var serviceProvider = Services.Create(args);
 
             var server = new NetServer(serviceProvider);
+
+            server.Chat.Received += (message) =>
+            {
+                Console.WriteLine(message.ToString());
+            };
 
             server.Start();
 

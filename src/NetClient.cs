@@ -49,10 +49,6 @@
         {
             return new ClientBuilder()
                 .AddDefaultSettings(parameters, this)
-                .RegisterTypes(serviceCollection =>
-                {
-
-                })
                 .Build();
         }
     }

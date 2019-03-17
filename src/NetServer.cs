@@ -56,12 +56,7 @@
             var parameters = new NetConnectionParameters();
             return new ServerBuilder()
                 .AddDefaultSettings(parameters, this)
-                .RegisterTypes(serviceCollection =>
-                {
-
-                })
                 .RegisterPacketHandlerModule<DefaultPacketHandlerModule>()
-                .RegisterPacketHandler<MessagePacket, MessageHandler>()
                 .Build();
 
             // .RegisterPacketHandler<PlayerUpdatePacket, PlayerUpdatePacketHandler>()

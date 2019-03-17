@@ -1,10 +1,10 @@
-﻿namespace Mallos.Networking.Packets
+﻿namespace Mallos.Networking.Chat
 {
     using Networker.Formatter.ZeroFormatter;
     using ZeroFormatter;
 
     [ZeroFormattable]
-    public class MessagePacket : ZeroFormatterPacketBase
+    public class ChatPacket : ZeroFormatterPacketBase
     {
         [Index(2)]
         public virtual string Channel { get; set; }
@@ -12,8 +12,8 @@
         [Index(3)]
         public virtual string Message { get; set; }
 
-        public MessagePacket() { }
-        public MessagePacket(string channel, string message)
+        public ChatPacket() { }
+        public ChatPacket(string channel, string message)
         {
             this.Channel = channel;
             this.Message = message;

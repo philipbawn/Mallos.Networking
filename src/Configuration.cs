@@ -1,6 +1,8 @@
 ﻿namespace Mallos.Networking
 {
+    using Mallos.Networking.Chat;
     using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Networker.Client.Abstractions;
     using Networker.Formatter.ZeroFormatter;
@@ -24,7 +26,13 @@
                 {
                     logBuilder.AddConfiguration(config.GetSection("Logging"));
                     logBuilder.AddConsole();
-                });
+                })
+                .RegisterTypes(serviceCollection =>
+                {
+                    serviceCollection.AddSingleton(c => peer);
+                    serviceCollection.AddSingleton(c => peer.Chat);
+                })
+                .RegisterPacketHandler<ChatPacket, ChatPacketHandler>();
         }
 
         public static IClientBuilder AddDefaultSettings(this IClientBuilder builder, NetConnectionParameters parameters, NetPeer peer)
@@ -45,7 +53,13 @@
                 {
                     logBuilder.AddConfiguration(config.GetSection("Logging"));
                     logBuilder.AddConsole();
-                });
+                })
+                .RegisterTypes(serviceCollection =>
+                {
+                    serviceCollection.AddSingleton(c => peer);
+                    serviceCollection.AddSingleton(c => peer.Chat);
+                })
+                .RegisterPacketHandler<ChatPacket, ChatPacketHandler>();
         }
     }
 }
