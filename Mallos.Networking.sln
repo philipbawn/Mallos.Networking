@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking", "src\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mallos.Networking.Test", "test\Mallos.Networking.Test\Mallos.Networking.Test.csproj", "{67291FD5-03E0-4DF4-B7CE-3DD59308184C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking.SteamProvider", "src\Mallos.Networking.SteamProvider\Mallos.Networking.SteamProvider.csproj", "{02F14B9E-B5D9-4522-946F-9A6106C4752F}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		test\Mallos.Networking.CommonTest\Mallos.Networking.CommonTest.projitems*{a6360d1b-d2d6-4286-8f70-5e3d0eb68337}*SharedItemsImports = 13
@@ -62,6 +64,10 @@ Global
 		{67291FD5-03E0-4DF4-B7CE-3DD59308184C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67291FD5-03E0-4DF4-B7CE-3DD59308184C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67291FD5-03E0-4DF4-B7CE-3DD59308184C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F14B9E-B5D9-4522-946F-9A6106C4752F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F14B9E-B5D9-4522-946F-9A6106C4752F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F14B9E-B5D9-4522-946F-9A6106C4752F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F14B9E-B5D9-4522-946F-9A6106C4752F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,6 +81,7 @@ Global
 		{80D9C739-11A3-4CC9-AB2A-336D7787C41F} = {89E80B1E-E97D-4B6E-BE19-57E7DF625D85}
 		{543316A8-B916-4F5B-AAFA-684831770BD7} = {D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}
 		{67291FD5-03E0-4DF4-B7CE-3DD59308184C} = {EDB23798-545E-4F81-B276-3F68A4CC5BDF}
+		{02F14B9E-B5D9-4522-946F-9A6106C4752F} = {D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {615018A0-7065-4FF7-9850-8682FB13285E}

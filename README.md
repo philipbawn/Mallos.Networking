@@ -5,12 +5,13 @@ High-level networking
 
 ### Features
 
-- [ ] User Managment
-    - [ ] Authentication
-    - [ ] Permissions logic
+- [-] User Managment
+- [ ] User Authentication (Login)
+- [ ] User Authentication Providers (Steam etc)
+- [ ] User Permissions logic (Admin etc)
 - [ ] Chat system
-    - [ ] Messages (Global, Channel, DM)
-    - [ ] Server Commands
+	- [ ] Messages (Global, Channel, DM)
+	- [ ] Server Commands
 - [ ] Game Session
     - [ ] Sync
     - [ ] Live Updates
@@ -29,7 +30,7 @@ server.Chat.Received += (message) =>
     Console.WriteLine(message.ToString());
 };
 
-server.Start();
+await server.Start();
 ```
 
 #### Create Client
@@ -41,7 +42,7 @@ client.Chat.Received += (message) =>
     Console.WriteLine(message.ToString());
 };
 
-client.Start(new NetConnectionParameters("eric", "password", "localhost"));
+await client.Start(new NetConnectionParameters("eric", "password", "localhost"));
 
 client.Chat.SendMessage("Hello World");
 ```
