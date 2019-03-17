@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Mallos.Networking.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\Mallos.Networking.CommonTest\Mallos.Networking.CommonTest.projitems" Label="Shared" />
+
+</Project>

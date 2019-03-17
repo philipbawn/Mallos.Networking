@@ -54,7 +54,7 @@
                 .ConfigureLogging(builder =>
                 {
                     builder.AddConfiguration(config.GetSection("Logging"));
-                    builder.AddConsole();
+                    // builder.AddConsole();
                 })
                 .RegisterTypes(serviceCollection =>
                 {
