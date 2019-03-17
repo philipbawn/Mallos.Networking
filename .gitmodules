@@ -1,3 +1,4 @@
 [submodule "dep/Networker"]
 	path = dep/Networker
 	url = https://github.com/erictuvesson/Networker.git
+	branch = develop
