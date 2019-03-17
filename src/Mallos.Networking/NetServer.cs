@@ -2,6 +2,7 @@
 {
     using System;
     using Mallos.Networking.User;
+    using Networker.Server.Abstractions;
 
     public class NetServer<TUser> : NetServerCore
         where TUser : IdentityUser
@@ -20,6 +21,11 @@
             : base(serviceProvider)
         {
             this.UserManager = userManager;
+        }
+
+        protected override void OnServerBuild(IServerBuilder builder)
+        {
+            builder.RegisterPacketHandler<LoginPacket, LoginPacketHandler<TUser>>();
         }
     }
 }

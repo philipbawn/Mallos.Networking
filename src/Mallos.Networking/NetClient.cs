@@ -1,5 +1,6 @@
 ﻿namespace Mallos.Networking
 {
+    using Mallos.Networking.User;
     using Microsoft.Extensions.Logging;
     using Networker.Client;
     using Networker.Client.Abstractions;
@@ -49,6 +50,8 @@
                 Logger?.LogWarning(errors);
                 return Task.FromResult(false);
             }
+
+            SendPacket(new LoginPacket(parameters.Username, parameters.Password));
 
             return Task.FromResult(status == NetPeerStatus.Online);
         }

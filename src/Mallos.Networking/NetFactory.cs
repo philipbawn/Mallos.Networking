@@ -1,6 +1,7 @@
 ﻿namespace Mallos.Networking
 {
     using Mallos.Networking.Chat;
+    using Mallos.Networking.User;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -59,7 +60,8 @@
                     serviceCollection.AddSingleton(c => peer);
                     serviceCollection.AddSingleton(c => peer.Chat);
                 })
-                .RegisterPacketHandler<ChatPacket, ChatPacketHandler>();
+                .RegisterPacketHandler<ChatPacket, ChatPacketHandler>()
+                .RegisterPacketHandler<LoginReplyPacket, LoginReplyPacketHandler>();
         }
     }
 }
