@@ -43,7 +43,7 @@
             this.Chat = new ChatService(this);
         }
 
-        public abstract Task Start(NetConnectionParameters parameters = default);
+        public abstract Task<bool> Start(NetConnectionParameters parameters = default);
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public abstract void SendPacket<T>(T packet);

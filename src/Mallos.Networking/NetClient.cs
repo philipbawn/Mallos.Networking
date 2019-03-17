@@ -5,6 +5,7 @@
     using System;
     using System.ComponentModel;
     using System.Net.Sockets;
+    using System.Threading;
     using System.Threading.Tasks;
 
     public class NetClient : NetPeer
@@ -27,7 +28,7 @@
         }
 
         /// <inheritdoc />
-        public override Task Start(NetConnectionParameters parameters = default)
+        public override Task<bool> Start(NetConnectionParameters parameters = default)
         {
             this.status = NetPeerStatus.Connecting;
             this.Parameters = parameters;
@@ -41,7 +42,15 @@
             this.NetworkerClient.Disconnected += ClientDisconnected;
             this.NetworkerClient.Connect();
 
-            return Task.CompletedTask;
+            // TODO: Setting connection timeout
+            int retries = 100;
+            while (retries > 0 && status == NetPeerStatus.Connecting)
+            {
+                Thread.Sleep(10);
+                retries -= 1;
+            }
+
+            return Task.FromResult(status == NetPeerStatus.Online);
         }
 
         /// <inheritdoc />

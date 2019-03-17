@@ -19,7 +19,10 @@ High-level networking
 
 #### Create Server
 ```cs
-var server = new NetServer(serviceProvider);
+var userStorage = new InMemoryUserStorage<IdentityUser>();
+var userManager = new UserManager<IdentityUser>(userStorage);
+
+var server = new NetServer<IdentityUser>(serviceProvider, userManager);
 
 server.Chat.Received += (message) =>
 {

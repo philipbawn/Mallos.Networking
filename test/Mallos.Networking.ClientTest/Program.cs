@@ -2,29 +2,35 @@
 {
     using System;
     using System.Threading;
+    using System.Threading.Tasks;
 
     class Program
     {
-        static void Main(string[] args)
+        static void Main(string[] args) => MainAsync(args).GetAwaiter().GetResult();
+        static async Task MainAsync(string[] args)
         {
             var serviceProvider = Services.Create(args);
 
             var client = new NetClient(serviceProvider);
 
-            client.Chat.Received += (message) =>
-            {
-                Console.WriteLine(message.ToString());
-            };
+            AddEvents(client);
 
-            client.Start(new NetConnectionParameters("eric", "abc123", "localhost"));
+            await client.Start(new NetConnectionParameters("eric", "abc123", "localhost"));
 
-            Helpers.WaitUntilRunning(client);
             while (client.Status != NetPeerStatus.Offline)
             {
                 client.Chat.SendMessage("Hello World");
 
                 Thread.Sleep(1000);
             }
+        }
+
+        static void AddEvents(NetClient client)
+        {
+            client.Chat.Received += (message) =>
+            {
+                Console.WriteLine(message.ToString());
+            };
         }
     }
 }

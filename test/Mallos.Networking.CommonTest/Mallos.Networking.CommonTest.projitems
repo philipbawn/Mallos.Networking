@@ -9,7 +9,6 @@
     <Import_RootNamespace>Mallos.Networking</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services.cs" />
   </ItemGroup>
 </Project>
