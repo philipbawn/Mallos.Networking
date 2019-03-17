@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class User
+    public class IdentityUser
     {
         /// <summary>
         /// Gets a unique id assigned to the user.
@@ -20,10 +20,10 @@
         public string PasswordHash { get; internal set; }
 
         /// <summary>
-        /// Initialize a new <see cref="User"/>.
+        /// Initialize a new <see cref="IdentityUser"/>.
         /// </summary>
         /// <param name="username">The username.</param>
-        public User(string username)
+        public IdentityUser(string username)
         {
             this.Username = username;
         }

@@ -4,11 +4,12 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public class InMemoryUserStorage : IUserStorage
+    public class InMemoryUserStorage<TUser> : IUserStorage<TUser>
+        where TUser : IdentityUser
     {
-        private readonly List<User> users = new List<User>();
+        private readonly List<TUser> users = new List<TUser>();
 
-        public async Task<bool> CreateAsync(User user)
+        public async Task<bool> CreateAsync(TUser user)
         {
             var otherUser = await FindByNameAsync(user.Username);
             if (otherUser != null)
@@ -29,9 +30,9 @@
             return true;
         }
 
-        public async Task<bool> UpdateAsync(User user)
+        public async Task<bool> UpdateAsync(TUser user)
         {
-            (int index, User otherUser) = await FindUserIndexByUniqueIdAsync(user.Guid);
+            (int index, TUser otherUser) = await FindUserIndexByUniqueIdAsync(user.Guid);
             if (otherUser == null || otherUser.Guid != user.Guid)
             {
                 return false;
@@ -41,9 +42,9 @@
             return true;
         }
 
-        public async Task<bool> DeleteAsync(User user)
+        public async Task<bool> DeleteAsync(TUser user)
         {
-            (int index, User otherUser) = await FindUserIndexByUniqueIdAsync(user.Guid);
+            (int index, TUser otherUser) = await FindUserIndexByUniqueIdAsync(user.Guid);
             if (otherUser == null || otherUser.Guid != user.Guid)
             {
                 return false;
@@ -53,7 +54,7 @@
             return true;
         }
 
-        public Task<User> FindByNameAsync(string username)
+        public Task<TUser> FindByNameAsync(string username)
         {
             var usernameLower = username.ToLower();
             foreach (var user in users)
@@ -63,16 +64,16 @@
                     return Task.FromResult(user);
                 }
             }
-            return Task.FromResult<User>(null);
+            return Task.FromResult<TUser>(null);
         }
 
-        public async Task<User> FindByIdAsync(Guid guid)
+        public async Task<TUser> FindByIdAsync(Guid guid)
         {
-            (int _, User user) = await FindUserIndexByUniqueIdAsync(guid);
+            (int _, TUser user) = await FindUserIndexByUniqueIdAsync(guid);
             return user;
         }
 
-        private Task<(int, User)> FindUserIndexByUniqueIdAsync(Guid guid)
+        private Task<(int, TUser)> FindUserIndexByUniqueIdAsync(Guid guid)
         {
             for (int i = 0; i < users.Count; i++)
             {

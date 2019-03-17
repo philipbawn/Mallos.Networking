@@ -4,19 +4,20 @@
     using Mallos.Networking.User;
     using Networker.Server.Abstractions;
 
-    public class NetServer : NetServerCore
+    public class NetServer<TUser> : NetServerCore
+        where TUser : IdentityUser
     {
         /// <summary>
         /// Gets the <see cref="UserManager"/>.
         /// </summary>
-        public UserManager UserManager { get; }
+        public UserManager<TUser> UserManager { get; }
 
         /// <summary>
-        /// Initialize a new <see cref="NetServer"/>.
+        /// Initialize a new <see cref="NetServer{TUser}"/>.
         /// </summary>
         /// <param name="serviceProvider">The services.</param>
         /// <param name="userManager">The user manager.</param>
-        public NetServer(IServiceProvider serviceProvider, UserManager userManager) 
+        public NetServer(IServiceProvider serviceProvider, UserManager<TUser> userManager) 
             : base(serviceProvider)
         {
             this.UserManager = userManager;
@@ -24,7 +25,7 @@
 
         protected override void OnServerBuild(IServerBuilder builder)
         {
-            builder.RegisterPacketHandler<LoginPacket, LoginPacketHandler>();
+            builder.RegisterPacketHandler<LoginPacket, LoginPacketHandler<TUser>>();
         }
     }
 }

@@ -3,12 +3,15 @@
     using System;
     using System.Threading.Tasks;
 
-    public class UserManager
+    public interface IUserManager {}
+
+    public class UserManager<TUser> : IUserManager
+        where TUser : IdentityUser
     {
         /// <summary>
-        /// Gets the <see cref="IUserStorage"/>.
+        /// Gets the <see cref="IUserStorage{TUser}"/>.
         /// </summary>
-        public IUserStorage UserStorage { get; }
+        public IUserStorage<TUser> UserStorage { get; }
 
         /// <summary>
         /// Gets the <see cref="PasswordHasher"/>.
@@ -16,10 +19,10 @@
         public PasswordHasher PasswordHasher { get; }
 
         /// <summary>
-        /// Initialize a new <see cref="UserManager"/>.
+        /// Initialize a new <see cref="UserManager{TUser}"/>.
         /// </summary>
         /// <param name="storage"></param>
-        public UserManager(IUserStorage storage, PasswordHasher passwordHasher = null)
+        public UserManager(IUserStorage<TUser> storage, PasswordHasher passwordHasher = null)
         {
             this.UserStorage = storage ?? throw new ArgumentNullException(nameof(storage));
             this.PasswordHasher = passwordHasher ?? new PasswordHasher();
@@ -31,7 +34,7 @@
         /// <param name="username">The username.</param>
         /// <param name="password">The user login information.</param>
         /// <returns>The task representing the asynchronous operation.</returns>
-        public virtual async Task<UserResult> AddLoginAsync(string username, string password)
+        public virtual async Task<IdentityResult> AddLoginAsync(string username, string password)
         {
             var user = await UserStorage.FindByNameAsync(username);
             var passwordHashed = PasswordHasher.HashPassword(password);
@@ -40,7 +43,7 @@
             var success = valid == VerifyHashedPasswordResult.Success ||
                           valid == VerifyHashedPasswordResult.SuccessRehashNeeded;
 
-            return new UserResult(success);
+            return new IdentityResult(success);
         }
 
         /// <summary>
@@ -49,7 +52,7 @@
         /// <param name="id">The user ID.</param>
         /// <param name="password">The user login information.</param>
         /// <returns>The task representing the asynchronous operation.</returns>
-        public virtual async Task<UserResult> AddLoginAsync(Guid id, string password)
+        public virtual async Task<IdentityResult> AddLoginAsync(Guid id, string password)
         {
             var user = await UserStorage.FindByIdAsync(id);
             var passwordHashed = PasswordHasher.HashPassword(password);
@@ -58,7 +61,7 @@
             var success = valid == VerifyHashedPasswordResult.Success ||
                           valid == VerifyHashedPasswordResult.SuccessRehashNeeded;
 
-            return new UserResult(success);
+            return new IdentityResult(success);
         }
 
         /// <summary>
@@ -66,7 +69,7 @@
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The task representing the asynchronous operation.</returns>
-        public virtual Task<UserResult> CreateAsync(User user) => CreateAsync(user, null);
+        public virtual Task<IdentityResult> CreateAsync(TUser user) => CreateAsync(user, null);
 
         /// <summary>
         /// Asynchronously creates a user with the given password.
@@ -74,7 +77,7 @@
         /// <param name="user">The user.</param>
         /// <param name="password">The password.</param>
         /// <returns>The task representing the asynchronous operation.</returns>
-        public virtual async Task<UserResult> CreateAsync(User user, string password)
+        public virtual async Task<IdentityResult> CreateAsync(TUser user, string password)
         {
             if (password != null)
             {
@@ -85,11 +88,11 @@
 
             try
             {
-                return new UserResult(await createTask);
+                return new IdentityResult(await createTask);
             }
             catch (Exception exception)
             {
-                return new UserResult(exception.Message);
+                return new IdentityResult(exception.Message);
             }
         }
 
@@ -98,9 +101,9 @@
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The task representing the asynchronous operation.</returns>
-        public virtual async Task<UserResult> DeleteAsync(User user)
+        public virtual async Task<IdentityResult> DeleteAsync(TUser user)
         {
-            return new UserResult(await UserStorage.DeleteAsync(user));
+            return new IdentityResult(await UserStorage.DeleteAsync(user));
         }
 
         /// <summary>
@@ -108,9 +111,9 @@
         /// </summary>
         /// <param name="user">The user.</param>
         /// <returns>The task representing the asynchronous operation.</returns>
-        public virtual async Task<UserResult> UpdateAsync(User user)
+        public virtual async Task<IdentityResult> UpdateAsync(TUser user)
         {
-            return new UserResult(await UserStorage.UpdateAsync(user));
+            return new IdentityResult(await UserStorage.UpdateAsync(user));
         }
 
         /// <summary>
@@ -119,10 +122,10 @@
         /// <param name="user">The user.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>The task representing the asynchronous operation.</returns>
-        public virtual async Task<UserResult> UpdatePassword(User user, string newPassword)
+        public virtual async Task<IdentityResult> UpdatePassword(TUser user, string newPassword)
         {
             user.PasswordHash = PasswordHasher.HashPassword(newPassword);
-            return new UserResult(await UserStorage.UpdateAsync(user));
+            return new IdentityResult(await UserStorage.UpdateAsync(user));
         }
     }
 }
