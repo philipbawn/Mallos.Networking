@@ -1,25 +1,23 @@
 ﻿namespace Mallos.Networking.ClientTest
 {
     using System.Threading;
-    using Microsoft.Extensions.Configuration;
 
     class Program
     {
         static void Main(string[] args)
         {
-            var serviceProvider = new ServicesCollection();
-            serviceProvider.AddConfig(args);
+            var serviceProvider = Services.Create(args);
 
             var client = new NetClient(serviceProvider);
 
-            client.Start(new NetConnectionParameters("", "", "127.0.0.1"));
+            client.Start(new NetConnectionParameters("eric", "", "localhost"));
 
             Helpers.WaitUntilRunning(client);
             while (client.Running)
             {
-                client.SendMessage("Hello World");
+                client.Chat.SendMessage("Hello World");
 
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
             }
         }
     }

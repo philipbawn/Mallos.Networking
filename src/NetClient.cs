@@ -1,9 +1,9 @@
 ﻿namespace Mallos.Networking
 {
-    using Mallos.Networking.Packets;
     using Networker.Client;
     using Networker.Client.Abstractions;
     using System;
+    using System.ComponentModel;
     using System.Net.Sockets;
 
     public class NetClient : NetPeer
@@ -29,8 +29,11 @@
             this.client.Connect();
         }
 
-        public override void SendMessage(string message) => client.Send(new MessagePacket(null, message));
-        public override void SendMessage(string channel, string message) => client.Send(new MessagePacket(channel, message));
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public override void SendPacket<T>(T packet)
+        {
+            client.Send(packet);
+        }
 
         private void ClientConnected(object sender, Socket args)
         {

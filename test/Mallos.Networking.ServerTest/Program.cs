@@ -6,8 +6,7 @@
     {
         static void Main(string[] args)
         {
-            var serviceProvider = new ServicesCollection();
-            serviceProvider.AddConfig(args);
+            var serviceProvider = Services.Create(args);
 
             var server = new NetServer(serviceProvider);
 
@@ -16,7 +15,7 @@
             Helpers.WaitUntilRunning(server);
             while (server.Running)
             {
-                Thread.Sleep(100);
+                Thread.Sleep(1000);
             }
         }
     }

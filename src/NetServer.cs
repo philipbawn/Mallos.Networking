@@ -5,6 +5,7 @@
     using Networker.Server;
     using Networker.Server.Abstractions;
     using System;
+    using System.ComponentModel;
 
     public class NetServer : NetPeer
     {
@@ -25,11 +26,16 @@
             this.server = CreateServer();
             this.server.ClientConnected += ClientConnected;
             this.server.ClientDisconnected += ClientDisconnected;
+
             this.server.Start();
         }
 
-        public override void SendMessage(string message) => server.Broadcast(new MessagePacket(null, message));
-        public override void SendMessage(string channel, string message) => throw new System.NotImplementedException();
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public override void SendPacket<T>(T packet)
+        {
+            // TODO: TCP and handle channel.
+            server.Broadcast(packet);
+        }
 
         private void ClientConnected(object sender, TcpConnectionConnectedEventArgs args)
         {
