@@ -5,7 +5,15 @@ High-level networking
 
 ### Features
 
-- [x] Chat system
+- [ ] User Managment
+    - [ ] Authentication
+    - [ ] Permissions logic
+- [ ] Chat system
+    - [ ] Messages (Global, Channel, DM)
+    - [ ] Server Commands
+- [ ] Game Session
+    - [ ] Sync
+    - [ ] Live Updates
 
 ### Sample
 
