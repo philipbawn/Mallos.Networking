@@ -5,7 +5,7 @@ High-level networking
 
 ## Features
 
-[-] Chat system
+- [x] Chat system
 
 #### Create Server
 ```cs
