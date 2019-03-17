@@ -3,9 +3,11 @@ High-level networking
 
 > This project is still a work in progress, a lot of things are not implemented yet.
 
-## Features
+### Features
 
 - [x] Chat system
+
+### Sample
 
 #### Create Server
 ```cs
@@ -29,4 +31,6 @@ client.Chat.Received += (message) =>
 };
 
 client.Start(new NetConnectionParameters("eric", "password", "localhost"));
+
+client.Chat.SendMessage("Hello World");
 ```
