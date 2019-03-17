@@ -1,0 +1,17 @@
+﻿{
+  "Network": {
+    "TcpPort": 25565,
+    "UdpPort": 25566,
+    "UdpLocalPort": 25567
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Debug"
+    },
+    "Console": {
+      "LogLevel": {
+        "Default": "Debug"
+      }
+    }
+  }
+}

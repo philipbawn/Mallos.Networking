@@ -9,6 +9,12 @@
     <ProjectReference Include="..\..\src\Mallos.Networking.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Import Project="..\Mallos.Networking.CommonTest\Mallos.Networking.CommonTest.projitems" Label="Shared" />
 
 </Project>

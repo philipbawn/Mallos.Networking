@@ -1,25 +1,28 @@
 ﻿namespace Mallos.Networking
 {
-    using System;
     using Mallos.Networking.Handlers;
     using Mallos.Networking.Packets;
-    using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using Networker.Formatter.ZeroFormatter;
     using Networker.Server;
     using Networker.Server.Abstractions;
+    using System;
 
     public class NetServer : NetPeer
     {
         public override bool Running => server != null && server.Information.IsRunning;
 
-        private readonly IServer server;
+        private IServer server;
 
         public NetServer(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
-            this.server = CreateServer(serviceProvider);
+
+        }
+
+        public override void Start(NetConnectionParameters parameters = default, Action<NetPeer, NetPeerStatus> callback = null)
+        {
+            this.Parameters = parameters;
+
+            this.server = CreateServer();
             this.server.ClientConnected += ClientConnected;
             this.server.ClientDisconnected += ClientDisconnected;
             this.server.Start();
@@ -42,23 +45,14 @@
             System.Console.WriteLine($"Client Disconnected from server {args.Connection.Socket.RemoteEndPoint}");
         }
 
-        private IServer CreateServer(IServiceProvider serviceProvider)
+        private IServer CreateServer()
         {
-            var config = (IConfiguration)serviceProvider.GetService(typeof(IConfiguration));
-
+            var parameters = new NetConnectionParameters();
             return new ServerBuilder()
-                .UseTcp(config.GetValue<int>("Network:TcpPort"))
-                .UseUdp(config.GetValue<int>("Network:UdpPort"))
-                .UseZeroFormatter()
-                .UseConfiguration(config)
-                .ConfigureLogging(builder =>
-                {
-                    builder.AddConfiguration(config.GetSection("Logging"));
-                    // builder.AddConsole();
-                })
+                .AddDefaultSettings(parameters, this)
                 .RegisterTypes(serviceCollection =>
                 {
-                  
+
                 })
                 .RegisterPacketHandlerModule<DefaultPacketHandlerModule>()
                 .RegisterPacketHandler<MessagePacket, MessageHandler>()

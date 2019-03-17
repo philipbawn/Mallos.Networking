@@ -1,6 +1,6 @@
 namespace Mallos.Networking
 {
-    public struct NetConnectionParameters
+    public readonly struct NetConnectionParameters
     {
         public readonly string Username;
         public readonly string Password;

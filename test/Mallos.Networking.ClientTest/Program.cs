@@ -8,12 +8,13 @@
         static void Main(string[] args)
         {
             var serviceProvider = new ServicesCollection();
-            serviceProvider.AddService(typeof(IConfiguration), new ConfigurationBuilder().Build());
+            serviceProvider.AddConfig(args);
 
-            var client = new NetClient(serviceProvider, new NetConnectionParameters("", "", "127.0.0.1"));
+            var client = new NetClient(serviceProvider);
+
+            client.Start(new NetConnectionParameters("", "", "127.0.0.1"));
 
             Helpers.WaitUntilRunning(client);
-
             while (client.Running)
             {
                 client.SendMessage("Hello World");
