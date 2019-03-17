@@ -45,8 +45,11 @@
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public override void SendPacket<T>(T packet)
         {
-            // TODO: TCP and handle channel.
-            NetworkerServer.Broadcast(packet);
+            if (Status == NetPeerStatus.Online)
+            {
+                // TODO: TCP and handle channel.
+                NetworkerServer.Broadcast(packet);
+            }
         }
 
         /// <summary>

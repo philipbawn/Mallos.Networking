@@ -16,7 +16,7 @@
 
         public override Task Process(ChatPacket packet, IPacketContext context)
         {
-            var message = new ChatMessage(packet.Channel, packet.Message);
+            var message = new ChatMessage(new ChatSender(), packet.Channel, packet.Message);
 
             chatService.InvokeReceived(message);
 

@@ -1,6 +1,7 @@
 ﻿namespace Mallos.Networking
 {
     using Mallos.Networking.Chat;
+    using Microsoft.Extensions.Logging;
     using System;
     using System.ComponentModel;
     using System.Threading.Tasks;
@@ -37,10 +38,16 @@
         /// </summary>
         public IServiceProvider Services { get; }
 
+        /// <summary>
+        /// Gets the <see cref="NetPeer"/>'s logger.
+        /// </summary>
+        protected ILogger Logger { get; }
+
         protected NetPeer(IServiceProvider serviceProvider)
         {
             this.Services = serviceProvider;
             this.Chat = new ChatService(this);
+            this.Logger = serviceProvider.TryCreateLogger<NetPeer>();
         }
 
         public abstract Task<bool> Start(NetConnectionParameters parameters = default);

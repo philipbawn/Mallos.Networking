@@ -7,17 +7,16 @@
 
     class Program
     {
-        static void Main(string[] args) => MainAsync(args).GetAwaiter().GetResult();
-        static async Task MainAsync(string[] args)
+        static void Main(string[] args)
         {
             var serviceProvider = Services.Create(args);
 
-            var userManager = await CreateUserManagerAsync();
+            var userManager = CreateUserManagerAsync().GetAwaiter().GetResult();
             var server = new NetServer<IdentityUser>(serviceProvider, userManager);
 
             AddEvents(server);
 
-            await server.Start();
+            server.Start().GetAwaiter().GetResult();
 
             while (server.Status != NetPeerStatus.Offline)
             {

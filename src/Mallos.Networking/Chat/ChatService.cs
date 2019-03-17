@@ -13,12 +13,7 @@
         public ChatService(NetPeer netPeer)
         {
             this.netPeer = netPeer;
-
-            var loggerFactory = (ILoggerFactory)netPeer.Services.GetService(typeof(ILoggerFactory));
-            if (loggerFactory != null)
-            {
-                this.logger = loggerFactory.CreateLogger<ChatService>();
-            }
+            this.logger = netPeer.Services.TryCreateLogger<ChatService>();
         }
 
         public void SendMessage(string message)

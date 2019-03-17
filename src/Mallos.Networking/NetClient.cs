@@ -1,11 +1,12 @@
 ﻿namespace Mallos.Networking
 {
+    using Microsoft.Extensions.Logging;
     using Networker.Client;
     using Networker.Client.Abstractions;
     using System;
     using System.ComponentModel;
+    using System.Linq;
     using System.Net.Sockets;
-    using System.Threading;
     using System.Threading.Tasks;
 
     public class NetClient : NetPeer
@@ -40,14 +41,13 @@
             this.NetworkerClient = builder.Build();
             this.NetworkerClient.Connected += ClientConnected;
             this.NetworkerClient.Disconnected += ClientDisconnected;
-            this.NetworkerClient.Connect();
 
-            // TODO: Setting connection timeout
-            int retries = 100;
-            while (retries > 0 && status == NetPeerStatus.Connecting)
+            var connectResult = this.NetworkerClient.Connect();
+            if (!connectResult.Success)
             {
-                Thread.Sleep(10);
-                retries -= 1;
+                var errors = string.Join(", ", connectResult.Errors.ToArray());
+                Logger?.LogWarning(errors);
+                return Task.FromResult(false);
             }
 
             return Task.FromResult(status == NetPeerStatus.Online);
@@ -57,7 +57,10 @@
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public override void SendPacket<T>(T packet)
         {
-            NetworkerClient.Send(packet);
+            if (Status == NetPeerStatus.Online)
+            {
+                NetworkerClient.Send(packet);
+            }
         }
 
         /// <summary>

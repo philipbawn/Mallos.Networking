@@ -2,12 +2,10 @@
 {
     using System;
     using System.Threading;
-    using System.Threading.Tasks;
 
     class Program
     {
-        static void Main(string[] args) => MainAsync(args).GetAwaiter().GetResult();
-        static async Task MainAsync(string[] args)
+        static void Main(string[] args)
         {
             var serviceProvider = Services.Create(args);
 
@@ -15,9 +13,9 @@
 
             AddEvents(client);
 
-            await client.Start(new NetConnectionParameters("eric", "abc123", "localhost"));
+            var connectResult = client.Start(new NetConnectionParameters("eric", "abc123", "localhost")).GetAwaiter().GetResult();
 
-            while (client.Status != NetPeerStatus.Offline)
+            while (client.Status == NetPeerStatus.Online)
             {
                 client.Chat.SendMessage("Hello World");
 
