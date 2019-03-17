@@ -9,7 +9,8 @@
         {
             var serviceProvider = Services.Create(args);
 
-            var server = new NetServer(serviceProvider);
+            var userManager = Helpers.CreateUserManagerAsync().GetAwaiter().GetResult();
+            var server = new NetServer(serviceProvider, userManager);
 
             server.Chat.Received += (message) =>
             {

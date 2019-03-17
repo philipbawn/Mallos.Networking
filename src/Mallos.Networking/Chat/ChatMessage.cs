@@ -1,4 +1,4 @@
-﻿namespace Mallos.Networking
+﻿namespace Mallos.Networking.Chat
 {
     public readonly struct ChatMessage
     {

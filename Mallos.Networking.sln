@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Networker.Formatter.Protobu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking", "src\Mallos.Networking\Mallos.Networking.csproj", "{543316A8-B916-4F5B-AAFA-684831770BD7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mallos.Networking.Abstractions", "src\Mallos.Networking.Abstractions\Mallos.Networking.Abstractions.csproj", "{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mallos.Networking.Test", "test\Mallos.Networking.Test\Mallos.Networking.Test.csproj", "{67291FD5-03E0-4DF4-B7CE-3DD59308184C}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -58,10 +58,10 @@ Global
 		{543316A8-B916-4F5B-AAFA-684831770BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{543316A8-B916-4F5B-AAFA-684831770BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{543316A8-B916-4F5B-AAFA-684831770BD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67291FD5-03E0-4DF4-B7CE-3DD59308184C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67291FD5-03E0-4DF4-B7CE-3DD59308184C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67291FD5-03E0-4DF4-B7CE-3DD59308184C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67291FD5-03E0-4DF4-B7CE-3DD59308184C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,7 +74,7 @@ Global
 		{3D9771F8-7535-465A-97F5-E7E0D5BE90EA} = {89E80B1E-E97D-4B6E-BE19-57E7DF625D85}
 		{80D9C739-11A3-4CC9-AB2A-336D7787C41F} = {89E80B1E-E97D-4B6E-BE19-57E7DF625D85}
 		{543316A8-B916-4F5B-AAFA-684831770BD7} = {D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}
-		{5F8BA0A7-C9C7-4516-8DA5-156715EEB09B} = {D991ABA1-5F21-4387-B0E1-32AB3FDFCFAC}
+		{67291FD5-03E0-4DF4-B7CE-3DD59308184C} = {EDB23798-545E-4F81-B276-3F68A4CC5BDF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {615018A0-7065-4FF7-9850-8682FB13285E}

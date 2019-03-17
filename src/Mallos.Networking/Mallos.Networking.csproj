@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\dep\Networker\Networker.Formatter.ZeroFormatter\Networker.Formatter.ZeroFormatter.csproj" />
     <ProjectReference Include="..\..\dep\Networker\Networker\Networker.csproj" />
-    <ProjectReference Include="..\Mallos.Networking.Abstractions\Mallos.Networking.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

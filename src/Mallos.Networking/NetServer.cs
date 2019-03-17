@@ -1,5 +1,6 @@
 ﻿namespace Mallos.Networking
 {
+    using Mallos.Networking.User;
     using Networker.Server;
     using Networker.Server.Abstractions;
     using System;
@@ -12,7 +13,7 @@
 
         private IServer server;
 
-        public NetServer(IServiceProvider serviceProvider)
+        public NetServer(IServiceProvider serviceProvider, IUserManager userManager)
             : base(serviceProvider)
         {
 
