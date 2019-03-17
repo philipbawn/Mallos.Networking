@@ -5,12 +5,11 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    class LoginPacketHandler<TUser> : PacketHandlerBase<LoginPacket>
-        where TUser : IdentityUser
+    class LoginPacketHandler : PacketHandlerBase<LoginPacket>
     {
-        public readonly UserManager<TUser> UserManager;
+        public readonly UserManager UserManager;
 
-        public LoginPacketHandler(UserManager<TUser> userManager)
+        public LoginPacketHandler(UserManager userManager)
         {
             this.UserManager = userManager;
         }

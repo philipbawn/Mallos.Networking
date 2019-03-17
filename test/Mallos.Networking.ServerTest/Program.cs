@@ -12,7 +12,7 @@
             var serviceProvider = Services.Create(args);
 
             var userManager = CreateUserManagerAsync().GetAwaiter().GetResult();
-            var server = new NetServer<IdentityUser>(serviceProvider, userManager);
+            var server = new NetServer(serviceProvider, userManager);
 
             AddEvents(server);
 
@@ -24,7 +24,7 @@
             }
         }
 
-        static void AddEvents(NetServer<IdentityUser> server)
+        static void AddEvents(NetServer server)
         {
             server.Chat.Received += (message) =>
             {
@@ -32,12 +32,12 @@
             };
         }
 
-        static async Task<UserManager<IdentityUser>> CreateUserManagerAsync()
+        static async Task<UserManager> CreateUserManagerAsync()
         {
-            var userStorage = new InMemoryUserStorage<IdentityUser>();
-            var userManager = new UserManager<IdentityUser>(userStorage);
+            var userStorage = new InMemoryUserStorage();
+            var userManager = new UserManager(userStorage);
 
-            await userManager.CreateAsync(new IdentityUser("Eric"), "abc123");
+            await userManager.CreateAsync(new User("Eric"), "abc123");
 
             return userManager;
         }

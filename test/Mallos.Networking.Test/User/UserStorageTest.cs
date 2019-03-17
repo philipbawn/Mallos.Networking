@@ -8,9 +8,9 @@ namespace Mallos.Networking.User
     {
         [Theory]
         [MemberData(nameof(UsernameData))]
-        public async Task CreateAndGetUser(IdentityUser[] testUsers)
+        public async Task CreateAndGetUser(User[] testUsers)
         {
-            var storage = new InMemoryUserStorage<IdentityUser>();
+            var storage = new InMemoryUserStorage();
 
             // Create Users
             foreach (var newUser in testUsers)
@@ -37,10 +37,10 @@ namespace Mallos.Networking.User
             new List<object[]>()
             {
                 new object[] {
-                    new IdentityUser[] {
-                        new IdentityUser("Eric"),
-                        new IdentityUser("Julia"),
-                        new IdentityUser("Linus")
+                    new User[] {
+                        new User("Eric"),
+                        new User("Julia"),
+                        new User("Linus")
                     }
                 }
             };
