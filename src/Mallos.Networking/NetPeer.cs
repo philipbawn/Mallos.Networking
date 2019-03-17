@@ -18,9 +18,9 @@
     public abstract class NetPeer
     {
         /// <summary>
-        /// Gets if the network is running.
+        /// Gets the <see cref="NetPeerStatus"/>.
         /// </summary>
-        public abstract bool Running { get; }
+        public abstract NetPeerStatus Status { get; }
 
         /// <summary>
         /// Gets the connected <see cref="NetConnectionParameters"/>.

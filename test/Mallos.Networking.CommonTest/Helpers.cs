@@ -9,16 +9,17 @@
         public static async Task<UserManager<IdentityUser>> CreateUserManagerAsync()
         {
             var userStorage = new InMemoryUserStorage<IdentityUser>();
+            var userManager =  new UserManager<IdentityUser>(userStorage);
 
-            await userStorage.CreateAsync(new IdentityUser("Eric"));
+            await userManager.CreateAsync(new IdentityUser("Eric"), "abc123");
 
-            return new UserManager<IdentityUser>(userStorage);
+            return userManager;
         }
 
         public static void WaitUntilRunning(NetPeer netPeer)
         {
             int retries = 100;
-            while (retries > 0 && !netPeer.Running)
+            while (retries > 0 && netPeer.Status == NetPeerStatus.Connecting)
             {
                 Thread.Sleep(10);
                 retries -= 1;

@@ -9,50 +9,65 @@
 
     public class NetClient : NetPeer
     {
-        public override bool Running => isRunning;
+        /// <inheritdoc />
+        public override NetPeerStatus Status => status;
 
-        private IClient client;
-        private bool isRunning = false;
+        protected IClient NetworkerClient { get; private set; }
 
+        private NetPeerStatus status = NetPeerStatus.Offline;
+
+        /// <summary>
+        /// Initialize a new <see cref="NetClient"/>.
+        /// </summary>
+        /// <param name="serviceProvider">The services.</param>
         public NetClient(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
 
         }
 
+        /// <inheritdoc />
         public override Task Start(NetConnectionParameters parameters = default)
         {
+            this.status = NetPeerStatus.Connecting;
             this.Parameters = parameters;
 
-            this.client = CreateClient(parameters);
-            this.client.Connected += ClientConnected;
-            this.client.Disconnected += ClientDisconnected;
-            this.client.Connect();
+            var builder = new ClientBuilder().AddDefaultSettings(parameters, this);
+
+            OnClientBuild(builder);
+
+            this.NetworkerClient = builder.Build();
+            this.NetworkerClient.Connected += ClientConnected;
+            this.NetworkerClient.Disconnected += ClientDisconnected;
+            this.NetworkerClient.Connect();
 
             return Task.CompletedTask;
         }
 
+        /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public override void SendPacket<T>(T packet)
         {
-            client.Send(packet);
+            NetworkerClient.Send(packet);
+        }
+
+        /// <summary>
+        /// Called before building the <see cref="IClient"/>.
+        /// </summary>
+        /// <param name="builder">The client builder.</param>
+        protected virtual void OnClientBuild(IClientBuilder builder)
+        {
+            // Apply custom client properties.
         }
 
         private void ClientConnected(object sender, Socket args)
         {
-            this.isRunning = true;
+            this.status = NetPeerStatus.Online;
         }
 
         private void ClientDisconnected(object sender, Socket args)
         {
-            this.isRunning = false;
-        }
-
-        private IClient CreateClient(NetConnectionParameters parameters)
-        {
-            return new ClientBuilder()
-                .AddDefaultSettings(parameters, this)
-                .Build();
+            this.status = NetPeerStatus.Offline;
         }
     }
 }

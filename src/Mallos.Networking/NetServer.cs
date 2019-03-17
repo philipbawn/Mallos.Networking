@@ -1,6 +1,5 @@
 ﻿namespace Mallos.Networking
 {
-    using Mallos.Networking.User;
     using Networker.Server;
     using Networker.Server.Abstractions;
     using System;
@@ -9,34 +8,54 @@
 
     public class NetServer : NetPeer
     {
-        public override bool Running => server != null && server.Information.IsRunning;
+        /// <inheritdoc />
+        public override NetPeerStatus Status => (NetworkerServer != null && NetworkerServer.Information.IsRunning) ? NetPeerStatus.Online : NetPeerStatus.Offline;
 
-        private IServer server;
+        protected IServer NetworkerServer { get; private set; }
 
-        public NetServer(IServiceProvider serviceProvider, IUserManager userManager)
+        /// <summary>
+        /// Initialize a new <see cref="NetServer"/>.
+        /// </summary>
+        /// <param name="serviceProvider">The services.</param>
+        public NetServer(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
 
         }
 
+        /// <inheritdoc />
         public override Task Start(NetConnectionParameters parameters = default)
         {
             this.Parameters = parameters;
 
-            this.server = CreateServer();
-            this.server.ClientConnected += ClientConnected;
-            this.server.ClientDisconnected += ClientDisconnected;
+            var builder = new ServerBuilder().AddDefaultSettings(parameters, this);
 
-            this.server.Start();
+            OnServerBuild(builder);
+
+            this.NetworkerServer = builder.Build();
+            this.NetworkerServer.ClientConnected += ClientConnected;
+            this.NetworkerServer.ClientDisconnected += ClientDisconnected;
+
+            this.NetworkerServer.Start();
 
             return Task.CompletedTask;
         }
 
+        /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public override void SendPacket<T>(T packet)
         {
             // TODO: TCP and handle channel.
-            server.Broadcast(packet);
+            NetworkerServer.Broadcast(packet);
+        }
+
+        /// <summary>
+        /// Called before building the <see cref="IServer"/>.
+        /// </summary>
+        /// <param name="builder">The server builder.</param>
+        protected virtual void OnServerBuild(IServerBuilder builder)
+        {
+            // Apply custom server properties.
         }
 
         private void ClientConnected(object sender, TcpConnectionConnectedEventArgs args)
@@ -51,16 +70,6 @@
         private void ClientDisconnected(object sender, TcpConnectionDisconnectedEventArgs args)
         {
             System.Console.WriteLine($"Client Disconnected from server {args.Connection.Socket.RemoteEndPoint}");
-        }
-
-        private IServer CreateServer()
-        {
-            var parameters = new NetConnectionParameters();
-            return new ServerBuilder()
-                .AddDefaultSettings(parameters, this)
-                .Build();
-
-            // .RegisterPacketHandler<PlayerUpdatePacket, PlayerUpdatePacketHandler>()
         }
     }
 }

@@ -16,10 +16,10 @@
                 Console.WriteLine(message.ToString());
             };
 
-            client.Start(new NetConnectionParameters("eric", "password", "localhost"));
+            client.Start(new NetConnectionParameters("eric", "abc123", "localhost"));
 
             Helpers.WaitUntilRunning(client);
-            while (client.Running)
+            while (client.Status != NetPeerStatus.Offline)
             {
                 client.Chat.SendMessage("Hello World");
 
