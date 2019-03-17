@@ -1,9 +1,11 @@
 ﻿namespace Mallos.Networking.Chat
 {
     using Networker.Formatter.ZeroFormatter;
+    using System.ComponentModel;
     using ZeroFormatter;
 
     [ZeroFormattable]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ChatPacket : ZeroFormatterPacketBase
     {
         [Index(2)]
