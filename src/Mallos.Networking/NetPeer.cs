@@ -1,6 +1,7 @@
 ﻿namespace Mallos.Networking
 {
     using Mallos.Networking.Chat;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using System;
     using System.ComponentModel;
@@ -73,5 +74,10 @@
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public abstract void SendPacket<T>(T packet, NetPeerProtocol protocol = NetPeerProtocol.Tcp);
+
+        internal virtual void RegisterTypes(IServiceCollection serviceCollection)
+        {
+            // TODO: Waiting for https://github.com/MarkioE/Networker/issues/35
+        }
     }
 }

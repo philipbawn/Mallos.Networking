@@ -32,11 +32,7 @@
                 {
                     serviceCollection.AddSingleton(c => peer);
                     serviceCollection.AddSingleton(c => peer.Chat);
-
-                    if (peer is NetServerCore netServer)
-                    {
-                        netServer.RegisterTypes(serviceCollection);
-                    }
+                    peer.RegisterTypes(serviceCollection);
                 });
         }
 
@@ -63,6 +59,7 @@
                 {
                     serviceCollection.AddSingleton(c => peer);
                     serviceCollection.AddSingleton(c => peer.Chat);
+                    peer.RegisterTypes(serviceCollection);
                 })
                 .RegisterPacketHandler<LoginReplyPacket, LoginReplyPacketHandler>()
                 .RegisterPacketHandler<ChatReplyPacket, ChatReplyPacketHandler>();
