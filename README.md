@@ -5,8 +5,8 @@ High-level networking
 
 ### Features
 
-- [-] User Managment
-- [-] User Authentication (Login)
+- [x] User Managment
+- [x] User Authentication (Login)
 - [ ] User Authentication Providers (Steam etc)
 - [ ] User Permissions logic (Admin etc)
 - [ ] Chat system
