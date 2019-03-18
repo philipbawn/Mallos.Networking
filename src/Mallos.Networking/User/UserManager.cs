@@ -37,13 +37,23 @@
         public virtual async Task<IdentityResult> AddLoginAsync(string username, string password)
         {
             var user = await UserStorage.FindByNameAsync(username);
+            if (user == null)
+            {
+                return new IdentityResult("Wrong username or password.");
+            }
+
             var passwordHashed = PasswordHasher.HashPassword(password);
 
             var valid = PasswordHasher.VerifyHashedPassword(user.PasswordHash, passwordHashed);
-            var success = valid == VerifyHashedPasswordResult.Success ||
-                          valid == VerifyHashedPasswordResult.SuccessRehashNeeded;
-
-            return new IdentityResult(success);
+            if (valid == VerifyHashedPasswordResult.Success ||
+                valid == VerifyHashedPasswordResult.SuccessRehashNeeded)
+            {
+                return new IdentityResult(true);
+            }
+            else
+            {
+                return new IdentityResult("Wrong username or password.");
+            }
         }
 
         /// <summary>

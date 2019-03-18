@@ -1,6 +1,7 @@
 ﻿namespace Mallos.Networking
 {
     using Mallos.Networking.User;
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Networker.Client;
     using Networker.Client.Abstractions;
@@ -8,6 +9,7 @@
     using System.ComponentModel;
     using System.Linq;
     using System.Net.Sockets;
+    using System.Threading;
     using System.Threading.Tasks;
 
     public class NetClient : NetPeer
@@ -17,7 +19,7 @@
 
         protected IClient NetworkerClient { get; private set; }
 
-        private NetPeerStatus status = NetPeerStatus.Offline;
+        internal NetPeerStatus status = NetPeerStatus.Offline;
 
         /// <summary>
         /// Initialize a new <see cref="NetClient"/>.
@@ -51,9 +53,29 @@
                 return Task.FromResult(false);
             }
 
-            SendPacket(new LoginPacket(parameters.Username, parameters.Password));
+            NetworkerClient.Send(new LoginPacket(parameters.Username, parameters.Password));
+
+            var config = (IConfiguration)Services.GetService(typeof(IConfiguration));
+            var timeout = config.GetValue<int>("Network:ConnectTimeout");
+            if (timeout <= 2) timeout = 2;
+
+            int timeoutSeconds = timeout * 2;
+            while (timeoutSeconds > 0 && (status == NetPeerStatus.Connecting || 
+                                          status == NetPeerStatus.Authenticating))
+            {
+                Thread.Sleep(500);
+                timeoutSeconds -= 1;
+            }
 
             return Task.FromResult(status == NetPeerStatus.Online);
+        }
+
+        /// <inheritdoc />
+        public override Task Stop()
+        {
+            this.status = NetPeerStatus.Offline;
+            this.NetworkerClient.Stop();
+            return Task.CompletedTask;
         }
 
         /// <inheritdoc />
@@ -77,7 +99,7 @@
 
         private void ClientConnected(object sender, Socket args)
         {
-            this.status = NetPeerStatus.Online;
+            this.status = NetPeerStatus.Authenticating;
         }
 
         private void ClientDisconnected(object sender, Socket args)

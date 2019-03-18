@@ -1,5 +1,6 @@
 ﻿namespace Mallos.Networking
 {
+    using Microsoft.Extensions.DependencyInjection;
     using Networker.Server;
     using Networker.Server.Abstractions;
     using System;
@@ -42,6 +43,13 @@
         }
 
         /// <inheritdoc />
+        public override Task Stop()
+        {
+            this.NetworkerServer.Stop();
+            return Task.CompletedTask;
+        }
+
+        /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public override void SendPacket<T>(T packet)
         {
@@ -59,6 +67,11 @@
         protected virtual void OnServerBuild(IServerBuilder builder)
         {
             // Apply custom server properties.
+        }
+
+        internal virtual void RegisterTypes(IServiceCollection serviceCollection)
+        {
+            // TODO: Waiting for https://github.com/MarkioE/Networker/issues/35
         }
 
         private void ClientConnected(object sender, TcpConnectionConnectedEventArgs args)

@@ -2,6 +2,7 @@
 {
     using System;
     using Mallos.Networking.User;
+    using Microsoft.Extensions.DependencyInjection;
     using Networker.Server.Abstractions;
 
     public class NetServer<TUser> : NetServerCore
@@ -26,6 +27,12 @@
         protected override void OnServerBuild(IServerBuilder builder)
         {
             builder.RegisterPacketHandler<LoginPacket, LoginPacketHandler<TUser>>();
+        }
+
+        internal override void RegisterTypes(IServiceCollection serviceCollection)
+        {
+            serviceCollection.AddSingleton(c => UserManager);
+            base.RegisterTypes(serviceCollection);
         }
     }
 }

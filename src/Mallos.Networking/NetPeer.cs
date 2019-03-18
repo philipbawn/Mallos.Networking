@@ -8,8 +8,24 @@
 
     public enum NetPeerStatus
     {
+        /// <summary>
+        /// Network is offline.
+        /// </summary>
         Offline,
+
+        /// <summary>
+        /// Network is connecting.
+        /// </summary>
         Connecting,
+
+        /// <summary>
+        /// Network is waiting for authentication.
+        /// </summary>
+        Authenticating,
+
+        /// <summary>
+        /// Network is online and authenticated.
+        /// </summary>
         Online
     }
 
@@ -41,7 +57,7 @@
         /// <summary>
         /// Gets the <see cref="NetPeer"/>'s logger.
         /// </summary>
-        protected ILogger Logger { get; }
+        protected internal ILogger Logger { get; }
 
         protected NetPeer(IServiceProvider serviceProvider)
         {
@@ -51,6 +67,8 @@
         }
 
         public abstract Task<bool> Start(NetConnectionParameters parameters = default);
+
+        public abstract Task Stop();
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public abstract void SendPacket<T>(T packet);

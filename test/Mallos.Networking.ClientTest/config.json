@@ -2,7 +2,8 @@
   "Network": {
     "TcpPort": 25565,
     "UdpPort": 25566,
-    "UdpLocalPort": 25568
+    "UdpLocalPort": 25568,
+    "ConnectTimeout": 20
   },
   "Logging": {
     "LogLevel": {
