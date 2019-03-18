@@ -37,8 +37,7 @@
                     {
                         netServer.RegisterTypes(serviceCollection);
                     }
-                })
-                .RegisterPacketHandler<ChatPacket, ChatPacketHandler>();
+                });
         }
 
         public static IClientBuilder AddDefaultSettings(this IClientBuilder builder, NetConnectionParameters parameters, NetPeer peer)
@@ -65,8 +64,8 @@
                     serviceCollection.AddSingleton(c => peer);
                     serviceCollection.AddSingleton(c => peer.Chat);
                 })
-                .RegisterPacketHandler<ChatPacket, ChatPacketHandler>()
-                .RegisterPacketHandler<LoginReplyPacket, LoginReplyPacketHandler>();
+                .RegisterPacketHandler<LoginReplyPacket, LoginReplyPacketHandler>()
+                .RegisterPacketHandler<ChatReplyPacket, ChatReplyPacketHandler>();
         }
     }
 }

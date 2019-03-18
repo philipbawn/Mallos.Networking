@@ -40,11 +40,6 @@
         public abstract NetPeerStatus Status { get; }
 
         /// <summary>
-        /// Gets the connected <see cref="NetConnectionParameters"/>.
-        /// </summary>
-        public NetConnectionParameters Parameters { get; protected set; }
-
-        /// <summary>
         /// Gets the chat client.
         /// </summary>
         public IChatService Chat { get; protected set; }

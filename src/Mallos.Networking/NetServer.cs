@@ -1,6 +1,7 @@
 ﻿namespace Mallos.Networking
 {
     using System;
+    using Mallos.Networking.Chat;
     using Mallos.Networking.User;
     using Microsoft.Extensions.DependencyInjection;
     using Networker.Server.Abstractions;
@@ -26,7 +27,9 @@
 
         protected override void OnServerBuild(IServerBuilder builder)
         {
-            builder.RegisterPacketHandler<LoginPacket, LoginPacketHandler<TUser>>();
+            builder
+                .RegisterPacketHandler<LoginPacket, LoginPacketHandler<TUser>>()
+                .RegisterPacketHandler<ChatPacket, ChatPacketHandler<TUser>>();
         }
 
         internal override void RegisterTypes(IServiceCollection serviceCollection)

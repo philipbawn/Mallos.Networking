@@ -35,7 +35,6 @@
         public override Task<bool> Start(NetConnectionParameters parameters = default)
         {
             this.status = NetPeerStatus.Connecting;
-            this.Parameters = parameters;
 
             var builder = new ClientBuilder().AddDefaultSettings(parameters, this);
 

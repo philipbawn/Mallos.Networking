@@ -27,8 +27,6 @@
         /// <inheritdoc />
         public override Task<bool> Start(NetConnectionParameters parameters = default)
         {
-            this.Parameters = parameters;
-
             var builder = new ServerBuilder().AddDefaultSettings(parameters, this);
 
             OnServerBuild(builder);
@@ -76,16 +74,12 @@
 
         private void ClientConnected(object sender, TcpConnectionConnectedEventArgs args)
         {
-            System.Console.WriteLine($"Client Connected to server {args.Connection.Socket.RemoteEndPoint}");
 
-            // TODO: Sync GameSession with the client.
-            // IPacketSerialiser packetSerialiser = null;
-            // args.Connection.Socket.Send(packetSerialiser.Serialise(packet));
         }
 
         private void ClientDisconnected(object sender, TcpConnectionDisconnectedEventArgs args)
         {
-            System.Console.WriteLine($"Client Disconnected from server {args.Connection.Socket.RemoteEndPoint}");
+            
         }
     }
 }

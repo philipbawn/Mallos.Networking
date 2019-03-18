@@ -7,7 +7,7 @@
     public class InMemoryUserStorage<TUser> : IUserStorage<TUser>
         where TUser : IdentityUser
     {
-        private readonly List<TUser> users = new List<TUser>();
+        protected readonly List<TUser> Users = new List<TUser>();
 
         public async Task<bool> CreateAsync(TUser user)
         {
@@ -25,7 +25,7 @@
             }
 
             user.Guid = Guid.NewGuid();
-            users.Add(user);
+            Users.Add(user);
 
             return true;
         }
@@ -38,7 +38,7 @@
                 return false;
             }
 
-            users[index] = user;
+            Users[index] = user;
             return true;
         }
 
@@ -50,14 +50,14 @@
                 return false;
             }
 
-            users.RemoveAt(index);
+            Users.RemoveAt(index);
             return true;
         }
 
         public Task<TUser> FindByNameAsync(string username)
         {
             var usernameLower = username.ToLower();
-            foreach (var user in users)
+            foreach (var user in Users)
             {
                 if (user.Username.ToLower() == usernameLower)
                 {
@@ -75,11 +75,11 @@
 
         private Task<(int, TUser)> FindUserIndexByUniqueIdAsync(Guid guid)
         {
-            for (int i = 0; i < users.Count; i++)
+            for (int i = 0; i < Users.Count; i++)
             {
-                if (users[i].Guid == guid)
+                if (Users[i].Guid == guid)
                 {
-                    return Task.FromResult((i, users[i]));
+                    return Task.FromResult((i, Users[i]));
                 }
             }
             return null;
