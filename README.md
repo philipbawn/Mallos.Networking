@@ -20,29 +20,37 @@ High-level networking
 
 #### Create Server
 ```cs
-var userStorage = new InMemoryUserStorage<IdentityUser>();
-var userManager = new UserManager<IdentityUser>(userStorage);
-
-var server = new NetServer<IdentityUser>(serviceProvider, userManager);
-
-server.Chat.Received += (message) =>
+public async Task CreateServer()
 {
-    Console.WriteLine(message.ToString());
-};
+	var userStorage = new InMemoryUserStorage<IdentityUser>();
+	var userManager = new UserManager<IdentityUser>(userStorage);
 
-await server.Start();
+	await userManager.CreateAsync(new IdentityUser("Eric"), "password");
+
+	var server = new NetServer<IdentityUser>(serviceProvider, userManager);
+
+	server.Chat.Received += (message) =>
+	{
+		Console.WriteLine(message.ToString());
+	};
+
+	await server.Start();
+}
 ```
 
 #### Create Client
 ```cs
-var client = new NetClient(serviceProvider);
-
-client.Chat.Received += (message) =>
+public async Task CreateClient()
 {
-    Console.WriteLine(message.ToString());
-};
+	var client = new NetClient(serviceProvider);
 
-await client.Start(new NetConnectionParameters("eric", "password", "localhost"));
+	client.Chat.Received += (message) =>
+	{
+		Console.WriteLine(message.ToString());
+	};
 
-client.Chat.SendMessage("Hello World");
+	await client.Start(new NetConnectionParameters("eric", "password", "localhost"));
+
+	client.Chat.SendMessage("Hello World");
+}
 ```
