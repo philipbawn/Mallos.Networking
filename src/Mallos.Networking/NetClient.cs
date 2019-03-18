@@ -79,11 +79,18 @@
 
         /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public override void SendPacket<T>(T packet)
+        public override void SendPacket<T>(T packet, NetPeerProtocol protocol = NetPeerProtocol.Tcp)
         {
             if (Status == NetPeerStatus.Online)
             {
-                NetworkerClient.Send(packet);
+                if (protocol == NetPeerProtocol.Tcp)
+                {
+                    NetworkerClient.Send(packet);
+                }
+                else
+                {
+                    NetworkerClient.SendUdp(packet);
+                }
             }
         }
 

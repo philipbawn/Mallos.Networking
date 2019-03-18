@@ -40,7 +40,7 @@
     public class ChatReplyPacket : ZeroFormatterPacketBase
     {
         [Index(2)]
-        public virtual string Sender { get; set; }
+        public virtual Guid Sender { get; set; }
 
         [Index(3)]
         public virtual string Message { get; set; }
@@ -48,7 +48,7 @@
         public ChatReplyPacket() { }
         public ChatReplyPacket(Guid sender, string message)
         {
-            this.Sender = sender.ToString();
+            this.Sender = sender;
             this.Message = message;
         }
 
@@ -66,13 +66,16 @@
         public ChatReplyPacketHandler(NetPeer netPeer, IChatService chatService)
         {
             this.NetPeer = netPeer;
-            // Not the best code, lets see if we can make it better later.
+
+            // NOTE: Not the best code, lets see if we can make it better later.
             this.ChatService = (ChatService)chatService;
         }
 
         public override Task Process(ChatReplyPacket packet, IPacketContext context)
         {
-            var message = new ChatMessage(new ChatSender(), "", packet.Message);
+            // TODO: Get sender User
+
+            var message = new ChatMessage(new ChatSender(), packet.Sender.ToString(), packet.Message);
             ChatService.InvokeReceived(message);
             return Task.CompletedTask;
         }
@@ -93,18 +96,20 @@
         {
             this.NetPeer = (NetServer<TUser>)netPeer;
             this.UserManager = userManager;
-            // Not the best code, lets see if we can make it better later.
+
+            // NOTE: Not the best code, lets see if we can make it better later.
             this.ChatService = (ChatService)chatService;
         }
 
         public override Task Process(ChatPacket packet, IPacketContext context)
         {
             var sender = context.Sender;
+            
+            // TODO: Get sender User
 
-            // context.Sender.Send(new ChatReplyPacket(Guid.NewGuid(), packet.Message));
-            // this.NetPeer.SendPacket(new ChatReplyPacket(Guid.NewGuid(), packet.Message));
+            this.NetPeer.SendPacket(new ChatReplyPacket(Guid.NewGuid(), packet.Message));
 
-            var message = new ChatMessage(new ChatSender(), "Server", packet.Message);
+            var message = new ChatMessage(new ChatSender(), sender.EndPoint.ToString(), packet.Message);
             ChatService.InvokeReceived(message);
 
             return Task.CompletedTask;

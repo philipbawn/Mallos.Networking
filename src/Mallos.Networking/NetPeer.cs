@@ -29,6 +29,12 @@
         Online
     }
 
+    public enum NetPeerProtocol
+    {
+        Tcp,
+        udp
+    }
+
     /// <summary>
     /// Peer class for <see cref="NetServer"/> and <see cref="NetClient"/> creating a shared API for both.
     /// </summary>
@@ -66,6 +72,6 @@
         public abstract Task Stop();
 
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public abstract void SendPacket<T>(T packet);
+        public abstract void SendPacket<T>(T packet, NetPeerProtocol protocol = NetPeerProtocol.Tcp);
     }
 }

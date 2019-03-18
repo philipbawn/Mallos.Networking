@@ -49,12 +49,18 @@
 
         /// <inheritdoc />
         [EditorBrowsable(EditorBrowsableState.Advanced)]
-        public override void SendPacket<T>(T packet)
+        public override void SendPacket<T>(T packet, NetPeerProtocol protocol = NetPeerProtocol.Tcp)
         {
             if (Status == NetPeerStatus.Online)
             {
-                // TODO: TCP and handle channel.
-                NetworkerServer.Broadcast(packet);
+                if (protocol == NetPeerProtocol.Tcp)
+                {
+                    NetworkerServer.GetConnections().Broadcast(packet);
+                }
+                else
+                {
+                    NetworkerServer.Broadcast(packet);
+                }
             }
         }
 
