@@ -4,6 +4,7 @@
     using Networker.Common;
     using Networker.Common.Abstractions;
     using Networker.Formatter.ZeroFormatter;
+    using Networker.Server.Abstractions;
     using System;
     using System.ComponentModel;
     using System.Threading.Tasks;
@@ -75,7 +76,7 @@
         {
             // TODO: Get sender User
 
-            var message = new ChatMessage(new ChatSender(), packet.Sender.ToString(), packet.Message);
+            var message = new ChatMessage(null, "", packet.Message);
             ChatService.InvokeReceived(message);
             return Task.CompletedTask;
         }
@@ -88,29 +89,31 @@
     class ChatPacketHandler<TUser> : PacketHandlerBase<ChatPacket>
         where TUser : IdentityUser
     {
-        public readonly NetServer<TUser> NetPeer;
-        public readonly UserManager<TUser> UserManager;
-        public readonly ChatService ChatService;
+        private readonly NetServer<TUser> netPeer;
+        private readonly ChatService chatService;
+        private readonly ITcpConnections tcpConnections;
 
-        public ChatPacketHandler(NetPeer netPeer, UserManager<TUser> userManager, IChatService chatService)
+        public ChatPacketHandler(
+            NetPeer netPeer, 
+            IChatService chatService,
+            ITcpConnections tcpConnections)
         {
-            this.NetPeer = (NetServer<TUser>)netPeer;
-            this.UserManager = userManager;
+            this.netPeer = (NetServer<TUser>)netPeer;
+            this.tcpConnections = tcpConnections;
 
             // NOTE: Not the best code, lets see if we can make it better later.
-            this.ChatService = (ChatService)chatService;
+            this.chatService = (ChatService)chatService;
         }
 
         public override Task Process(ChatPacket packet, IPacketContext context)
         {
-            var sender = context.Sender;
-            
-            // TODO: Get sender User
+            var sender = tcpConnections.FindByEndpoint(context.Sender.EndPoint);
+            var user = (TUser)sender.UserTag;
 
-            this.NetPeer.SendPacket(new ChatReplyPacket(Guid.NewGuid(), packet.Message));
+            this.netPeer.SendPacket(new ChatReplyPacket(Guid.NewGuid(), packet.Message));
 
-            var message = new ChatMessage(new ChatSender(), sender.EndPoint.ToString(), packet.Message);
-            ChatService.InvokeReceived(message);
+            var message = new ChatMessage(user, packet.Channel, packet.Message);
+            chatService.InvokeReceived(message);
 
             return Task.CompletedTask;
         }

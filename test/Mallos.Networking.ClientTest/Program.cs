@@ -15,9 +15,10 @@
 
             var connectResult = client.Start(new NetConnectionParameters("eric", "abc123", "localhost")).GetAwaiter().GetResult();
 
+            int count = 0;
             while (client.Status == NetPeerStatus.Online)
             {
-                client.Chat.SendMessage("Hello World");
+                client.Chat.SendMessage($"Hello World {++count}");
 
                 Thread.Sleep(1000);
             }

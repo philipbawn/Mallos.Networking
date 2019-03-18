@@ -1,7 +1,9 @@
 ﻿namespace Mallos.Networking
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Threading.Tasks;
     using Mallos.Networking.Chat;
     using Mallos.Networking.User;
@@ -31,6 +33,17 @@
             : base(serviceProvider)
         {
             this.UserManager = userManager;
+        }
+
+        /// <summary>
+        /// Gets all the currently connected <see cref="IdentityUser"/>'s.
+        /// </summary>
+        /// <returns>The users.</returns>
+        public IEnumerable<TUser> GetConnectedUsers()
+        {
+            return NetworkerServer.GetConnections()
+                .GetConnections()
+                .Select(o => (TUser)o.UserTag);
         }
 
         /// <inheritdoc />
