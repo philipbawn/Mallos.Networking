@@ -49,7 +49,7 @@
     class LoginPacketHandler<TUser> : PacketHandlerBase<LoginPacket>
         where TUser : IdentityUser
     {
-        private readonly NetPeer NetPeer;
+        private readonly NetServer<TUser> NetPeer;
         private readonly UserManager<TUser> UserManager;
         private readonly ITcpConnections TcpConnections;
 
@@ -58,7 +58,7 @@
             UserManager<TUser> userManager,
             ITcpConnections tcpConnections)
         {
-            this.NetPeer = netPeer;
+            this.NetPeer = (NetServer<TUser>)netPeer;
             this.UserManager = userManager;
             this.TcpConnections = tcpConnections;
         }
@@ -74,8 +74,12 @@
 
             if (replyPacket.Accepted)
             {
+                var user = await UserManager.UserStorage.FindByNameAsync(packet.Username);
+
                 var userConnection = TcpConnections.FindByEndpoint(context.Sender.EndPoint);
-                userConnection.UserTag = await UserManager.UserStorage.FindByNameAsync(packet.Username);
+                userConnection.UserTag = user;
+
+                NetPeer.OnClientConnected(user);
 
                 this.NetPeer.Logger.LogInformation("User '{username}' authenticated ({address}).",
                     packet.Username, context.Sender.EndPoint.ToString());

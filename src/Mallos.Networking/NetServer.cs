@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
@@ -22,6 +23,11 @@
         /// </summary>
         public UserManager<TUser> UserManager { get; }
 
+        /// <summary>
+        /// Gets all the currently connected <see cref="IdentityUser"/>'s.
+        /// </summary>
+        public ObservableCollection<TUser> ConnectedUsers { get; }
+
         protected IServer NetworkerServer { get; private set; }
 
         /// <summary>
@@ -33,17 +39,7 @@
             : base(serviceProvider)
         {
             this.UserManager = userManager;
-        }
-
-        /// <summary>
-        /// Gets all the currently connected <see cref="IdentityUser"/>'s.
-        /// </summary>
-        /// <returns>The users.</returns>
-        public IEnumerable<TUser> GetConnectedUsers()
-        {
-            return NetworkerServer.GetConnections()
-                .GetConnections()
-                .Select(o => (TUser)o.UserTag);
+            this.ConnectedUsers = new ObservableCollection<TUser>();
         }
 
         /// <inheritdoc />
@@ -54,9 +50,7 @@
             OnServerBuild(builder);
 
             this.NetworkerServer = builder.Build();
-            this.NetworkerServer.ClientConnected += ClientConnected;
             this.NetworkerServer.ClientDisconnected += ClientDisconnected;
-
             this.NetworkerServer.Start();
 
             return Task.FromResult(true);
@@ -86,6 +80,16 @@
             }
         }
 
+        protected internal virtual void OnClientConnected(TUser user)
+        {
+            ConnectedUsers.Add(user);
+        }
+
+        protected internal virtual void OnClientDisconnected(TUser user)
+        {
+            ConnectedUsers.Remove(user);
+        }
+
         /// <summary>
         /// Called before building the <see cref="IServer"/>.
         /// </summary>
@@ -97,20 +101,15 @@
                 .RegisterPacketHandler<ChatPacket, ChatPacketHandler<TUser>>();
         }
 
+        private void ClientDisconnected(object sender, TcpConnectionDisconnectedEventArgs args)
+        {
+            OnClientDisconnected((TUser)args.Connection.UserTag);
+        }
+
         internal override void RegisterTypes(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(c => UserManager);
             base.RegisterTypes(serviceCollection);
-        }
-
-        private void ClientConnected(object sender, TcpConnectionConnectedEventArgs args)
-        {
-
-        }
-
-        private void ClientDisconnected(object sender, TcpConnectionDisconnectedEventArgs args)
-        {
-
         }
     }
 }

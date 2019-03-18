@@ -1,17 +1,20 @@
 ﻿namespace Mallos.Networking.Chat
 {
     using System;
-    using Microsoft.Extensions.Logging;
+    using System.Collections.ObjectModel;
 
     class ChatService : IChatService
     {
-        private readonly NetPeer netPeer;
+        public ObservableCollection<ChatMessage> Messages { get; }
 
         public event Action<ChatMessage> Received;
+
+        private readonly NetPeer netPeer;
 
         public ChatService(NetPeer netPeer)
         {
             this.netPeer = netPeer;
+            this.Messages = new ObservableCollection<ChatMessage>();
         }
 
         public void SendMessage(string message)
@@ -24,6 +27,10 @@
             netPeer.SendPacket(new ChatPacket(channel, message));
         }
 
-        internal void InvokeReceived(ChatMessage message) => Received?.Invoke(message);
+        internal void InvokeReceived(ChatMessage message)
+        {
+            Messages.Add(message);
+            Received?.Invoke(message);
+        }
     }
 }
