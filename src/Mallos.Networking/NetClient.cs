@@ -1,6 +1,8 @@
 ﻿namespace Mallos.Networking
 {
     using Mallos.Networking.User;
+    using Mallos.Networking.User.Abstractions;
+    using Mallos.Networking.User.Packets;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Networker.Client;
@@ -12,7 +14,7 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class NetClient : NetPeer
+    public class NetClient : NetPeer<IdentityUser>
     {
         /// <inheritdoc />
         public override NetPeerStatus Status => status;
@@ -32,7 +34,7 @@
         }
 
         /// <inheritdoc />
-        public override Task<bool> Start(NetConnectionParameters parameters = default)
+        public override Task<bool> Start(NetConnectionParameters parameters)
         {
             this.status = NetPeerStatus.Connecting;
 

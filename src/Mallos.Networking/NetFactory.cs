@@ -2,6 +2,7 @@
 {
     using Mallos.Networking.Chat;
     using Mallos.Networking.User;
+    using Mallos.Networking.User.Abstractions;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -11,7 +12,8 @@
 
     static class NetFactory
     {
-        public static IServerBuilder AddDefaultSettings(this IServerBuilder builder, NetConnectionParameters parameters, NetPeer peer)
+        public static IServerBuilder AddDefaultSettings<TUser>(this IServerBuilder builder, NetConnectionParameters parameters, NetPeer<TUser> peer)
+            where TUser : IdentityUser
         {
             var config = (IConfiguration)peer.Services.GetService(typeof(IConfiguration));
 
@@ -36,7 +38,8 @@
                 });
         }
 
-        public static IClientBuilder AddDefaultSettings(this IClientBuilder builder, NetConnectionParameters parameters, NetPeer peer)
+        public static IClientBuilder AddDefaultSettings<TUser>(this IClientBuilder builder, NetConnectionParameters parameters, NetPeer<TUser> peer)
+            where TUser : IdentityUser
         {
             var config = (IConfiguration)peer.Services.GetService(typeof(IConfiguration));
 
@@ -61,8 +64,8 @@
                     serviceCollection.AddSingleton(c => peer.Chat);
                     peer.RegisterTypes(serviceCollection);
                 })
-                .RegisterPacketHandler<LoginReplyPacket, LoginReplyPacketHandler>()
-                .RegisterPacketHandler<ChatReplyPacket, ChatReplyPacketHandler>();
+                .RegisterPacketHandler<User.Packets.LoginReplyPacket, LoginClientHandler>()
+                .RegisterPacketHandler<Chat.Packets.ChatReplyPacket, ChatReceiverHandler<TUser>>();
         }
     }
 }

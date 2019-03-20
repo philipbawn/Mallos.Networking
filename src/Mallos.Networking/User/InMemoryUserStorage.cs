@@ -1,5 +1,6 @@
 ﻿namespace Mallos.Networking.User
 {
+    using Mallos.Networking.User.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;

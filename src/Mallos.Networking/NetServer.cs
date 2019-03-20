@@ -1,18 +1,17 @@
 ﻿namespace Mallos.Networking
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Threading.Tasks;
     using Mallos.Networking.Chat;
     using Mallos.Networking.User;
+    using Mallos.Networking.User.Abstractions;
     using Microsoft.Extensions.DependencyInjection;
     using Networker.Server;
     using Networker.Server.Abstractions;
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Threading.Tasks;
 
-    public class NetServer<TUser> : NetPeer
+    public class NetServer<TUser> : NetPeer<TUser>
         where TUser : IdentityUser
     {
         /// <inheritdoc />
@@ -35,7 +34,7 @@
         /// </summary>
         /// <param name="serviceProvider">The services.</param>
         /// <param name="userManager">The user manager.</param>
-        public NetServer(IServiceProvider serviceProvider, UserManager<TUser> userManager) 
+        public NetServer(IServiceProvider serviceProvider, UserManager<TUser> userManager)
             : base(serviceProvider)
         {
             this.UserManager = userManager;
@@ -97,8 +96,8 @@
         protected virtual void OnServerBuild(IServerBuilder builder)
         {
             builder
-                .RegisterPacketHandler<LoginPacket, LoginPacketHandler<TUser>>()
-                .RegisterPacketHandler<ChatPacket, ChatPacketHandler<TUser>>();
+                .RegisterPacketHandler<User.Packets.LoginPacket, LoginServerHandler<TUser>>()
+                .RegisterPacketHandler<Chat.Packets.ChatPacket, ChatServerHandler<TUser>>();
         }
 
         private void ClientDisconnected(object sender, TcpConnectionDisconnectedEventArgs args)

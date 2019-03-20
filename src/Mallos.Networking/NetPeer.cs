@@ -1,6 +1,8 @@
 ﻿namespace Mallos.Networking
 {
     using Mallos.Networking.Chat;
+    using Mallos.Networking.Chat.Abstractions;
+    using Mallos.Networking.User.Abstractions;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using System;
@@ -39,7 +41,8 @@
     /// <summary>
     /// Peer class for <see cref="NetServer"/> and <see cref="NetClient"/> creating a shared API for both.
     /// </summary>
-    public abstract class NetPeer
+    public abstract class NetPeer<TUser>
+        where TUser : IdentityUser
     {
         /// <summary>
         /// Gets the <see cref="NetPeerStatus"/>.
@@ -49,7 +52,7 @@
         /// <summary>
         /// Gets the chat client.
         /// </summary>
-        public IChatService Chat { get; protected set; }
+        public IChatService<TUser> Chat { get; protected set; }
 
         /// <summary>
         /// Gets the <see cref="IServiceProvider"/> used by this class.
@@ -64,8 +67,8 @@
         protected NetPeer(IServiceProvider serviceProvider)
         {
             this.Services = serviceProvider;
-            this.Chat = new ChatService(this);
-            this.Logger = serviceProvider.TryCreateLogger<NetPeer>();
+            this.Chat = new ChatService<TUser>(this);
+            this.Logger = serviceProvider.TryCreateLogger<NetPeer<TUser>>();
         }
 
         public abstract Task<bool> Start(NetConnectionParameters parameters = default);
