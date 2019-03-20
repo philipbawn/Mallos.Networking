@@ -38,7 +38,7 @@
         {
             this.status = NetPeerStatus.Connecting;
 
-            var builder = new ClientBuilder().AddDefaultSettings(parameters, this);
+            var builder = AddDefaultSettings(new ClientBuilder(), parameters);
 
             OnClientBuild(builder);
 

@@ -44,7 +44,7 @@
         /// <inheritdoc />
         public override Task<bool> Start(NetConnectionParameters parameters = default)
         {
-            var builder = new ServerBuilder().AddDefaultSettings(parameters, this);
+            var builder = AddDefaultSettings(new ServerBuilder(), parameters);
 
             OnServerBuild(builder);
 
@@ -100,15 +100,15 @@
                 .RegisterPacketHandler<Chat.Packets.ChatPacket, ChatServerHandler<TUser>>();
         }
 
-        private void ClientDisconnected(object sender, TcpConnectionDisconnectedEventArgs args)
-        {
-            OnClientDisconnected((TUser)args.Connection.UserTag);
-        }
-
-        internal override void RegisterTypes(IServiceCollection serviceCollection)
+        protected override void RegisterTypes(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton(c => UserManager);
             base.RegisterTypes(serviceCollection);
+        }
+
+        private void ClientDisconnected(object sender, TcpConnectionDisconnectedEventArgs args)
+        {
+            OnClientDisconnected((TUser)args.Connection.UserTag);
         }
     }
 }
