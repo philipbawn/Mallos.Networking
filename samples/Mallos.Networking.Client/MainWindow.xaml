@@ -21,7 +21,14 @@
                         <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
 
-                    <ListView Margin="10" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
+                    <ListView Margin="10, 10, 5, 10" ItemsSource="{Binding Messages}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding}" />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
 
                     <TextBox Name="ChatTextBox" Margin="10, 0, 10, 8" Grid.Row="2" Grid.Column="0" KeyDown="ChatTextBox_KeyDown" />
@@ -45,7 +52,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <TextBox Margin="10" Grid.Row="1" IsReadOnly="True" />
+                    <TextBox Name="LogTextBox" Margin="10" Grid.Row="1" IsReadOnly="True" />
                 </Grid>
             </TabItem>
         </TabControl>

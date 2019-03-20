@@ -29,7 +29,7 @@
         public override string ToString()
         {
             var builder = new StringBuilder();
-            builder.Append(Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff zzz"));
+            builder.Append(Timestamp.ToString("HH:mm:ss.fff"));
             builder.Append(" [");
             builder.Append(LogLevel.ToString());
             builder.Append("] ");

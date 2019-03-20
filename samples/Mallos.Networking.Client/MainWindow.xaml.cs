@@ -1,12 +1,28 @@
 ﻿namespace Mallos.Networking.ClientSample
 {
+    using Mallos.Networking.Chat.Abstractions;
+    using Mallos.Networking.Logging.Memory;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
     using System.Windows;
     using System.Windows.Input;
+    using System.Windows.Threading;
 
     public partial class MainWindow : Window
     {
+        // DataBindings
+        public ObservableCollectionDispatcher<ChatMessage> Messages { get; }
+
         // Client
+        public ServiceProvider ServiceProvider { get; private set; }
         public NetClient NetClient { get; private set; }
+
+        private DispatcherTimer dispatcherTimer;
 
         public MainWindow()
         {
@@ -14,10 +30,47 @@
 
             this.DataContext = this;
 
-            var serviceProvider = Services.Create();
+            var serviceCollection = new ServiceCollection();
 
-            this.NetClient = new NetClient(serviceProvider);
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("config.json", optional: false, reloadOnChange: false)
+                .Build();
+
+            serviceCollection.AddSingleton<IConfiguration>(config);
+
+            serviceCollection.AddLogging(logging =>
+            {
+                logging.AddConfiguration(config.GetSection("Logging"));
+                logging.AddMemory();
+            });
+
+            this.ServiceProvider = serviceCollection.BuildServiceProvider();
+
+            this.NetClient = new NetClient(ServiceProvider);
             this.NetClient.Start(new NetConnectionParameters("eric", "abc123", "localhost"));
+
+            // DataBindings
+            this.Messages = new ObservableCollectionDispatcher<ChatMessage>(Dispatcher, NetClient.Chat.Messages);
+
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+        }
+
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            var logger = ServiceProvider.GetServices<ILoggerProvider>().First(o => o is MemoryLoggerProvider);
+            if (logger is MemoryLoggerProvider memoryLogger)
+            {
+                var builder = new StringBuilder();
+                foreach (var message in memoryLogger.Messages)
+                {
+                    builder.Append(message);
+                }
+                this.LogTextBox.Text = builder.ToString();
+            }
         }
 
         private void ChatTextBox_KeyDown(object sender, KeyEventArgs e)

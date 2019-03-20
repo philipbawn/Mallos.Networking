@@ -1,4 +1,4 @@
-﻿namespace Mallos.Networking.ServerSample
+﻿namespace Mallos.Networking
 {
     using System.Collections.ObjectModel;
     using System.Collections.Specialized;
