@@ -53,7 +53,7 @@
             var userStorage = new InMemoryUserStorage<IdentityUser>();
             var userManager = new UserManager<IdentityUser>(userStorage);
 
-            userManager.CreateAsync(new IdentityUser("Eric"), "abc123").Wait();
+            userManager.CreateAsync(new IdentityUser("Admin"), "admin").Wait();
 
             this.NetServer = new NetServer<IdentityUser>(ServiceProvider, userManager);
             this.NetServer.Start();

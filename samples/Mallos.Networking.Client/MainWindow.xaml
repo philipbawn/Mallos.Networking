@@ -33,11 +33,6 @@
 
                     <TextBox Name="ChatTextBox" Margin="10, 0, 10, 8" Grid.Row="2" Grid.Column="0" KeyDown="ChatTextBox_KeyDown" />
 
-                    <StackPanel Orientation="Horizontal" Margin="10, 5" Grid.Row="0" Grid.Column="1">
-                        <TextBlock FontSize="16" Text="Status:" />
-                        <TextBlock FontSize="16" Text="{Binding NetClient.Status}" Padding="10, 0" />
-                    </StackPanel>
-
                     <ListView Margin="10" Grid.Row="1" Grid.Column="1">
                     </ListView>
                     
@@ -56,5 +51,24 @@
                 </Grid>
             </TabItem>
         </TabControl>
+
+        <Grid Name="Overlay">
+            <Grid.Background>
+                <SolidColorBrush Opacity="0.85" Color="White"/>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Label Margin="20" FontSize="32">Login In</Label>
+                <TextBox Name="LoginAddressTextBox" Text="localhost" Margin="10, 5" />
+                <TextBox Name="LoginNameTextBox" Margin="10, 5" />
+                <PasswordBox Name="LoginPasswordBox" Margin="10, 5" />
+                <Button Margin="10, 5" Content="Login" Click="LoginButton_Click" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

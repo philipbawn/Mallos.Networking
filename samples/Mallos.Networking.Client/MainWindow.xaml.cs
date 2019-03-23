@@ -48,7 +48,6 @@
             this.ServiceProvider = serviceCollection.BuildServiceProvider();
 
             this.NetClient = new NetClient(ServiceProvider);
-            this.NetClient.Start(new NetConnectionParameters("eric", "abc123", "localhost"));
 
             // DataBindings
             this.Messages = new ObservableCollectionDispatcher<ChatMessage>(Dispatcher, NetClient.Chat.Messages);
@@ -93,6 +92,24 @@
                 this.NetClient.Chat.SendMessage(ChatTextBox.Text);
                 this.ChatTextBox.Text = "";
             }
+        }
+
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            var netParams = new NetConnectionParameters(
+                LoginNameTextBox.Text, LoginPasswordBox.Password, LoginAddressTextBox.Text);
+
+            this.NetClient.Start(netParams)
+                .ContinueWith(task =>
+                {
+                    Dispatcher.Invoke(() =>
+                    {
+                        if (task.Result)
+                        {
+                            this.Overlay.Visibility = Visibility.Hidden;
+                        }
+                    });
+                });
         }
     }
 }
